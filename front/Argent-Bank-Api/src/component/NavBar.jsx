@@ -1,8 +1,10 @@
 import React from 'react';
 import '../main.css';
 import { logout } from '../api';
+import { useSelector } from 'react-redux';
 
 export const Nav = () => {
+  const user = useSelector((state) => state.user.user)
   return (
     <nav className="main-nav">
       <a className="main-nav-logo" href="./index">
@@ -14,11 +16,11 @@ export const Nav = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </a>
       <div>
-        <a className="main-nav-item" href="./sign-in">
-          <i className="fa fa-user-circle"></i>
-          Sign In
-        </a>
-        <button onClick={logout}>Logout</button>
+        {user ? <button onClick={logout}>Logout</button> :
+          <a className="main-nav-item" href="./sign-in">
+            <i className="fa fa-user-circle"></i>
+            Sign In
+          </a>}
       </div>
     </nav>
   );

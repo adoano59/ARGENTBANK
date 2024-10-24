@@ -11,6 +11,9 @@ import SignIn from "./pages/Sign-in";
 import User from "./pages/User";
 import { store } from './store'
 import { Provider } from 'react-redux'
+import  {GuestRoute, PrivateRoute} from "./component/Routes";
+
+
 
 const router = createBrowserRouter([
   {
@@ -25,12 +28,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-in",
-    element: <SignIn />
+    element: (
+      <GuestRoute>
+        <SignIn />
+      </GuestRoute>
+    ),
 
   },
   {
     path: "/user",
-    element: <User />
+    element: (
+      <PrivateRoute>
+        <User />
+      </PrivateRoute>
+    ),
 
   }
 
@@ -38,7 +49,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-  <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </Provider>
 );
 

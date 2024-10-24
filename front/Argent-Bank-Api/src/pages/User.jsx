@@ -1,22 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import '../main.css';
-import { Nav } from '../component/NavBar';
-import { updateProfile } from '../api';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/user';
+import { Nav } from '../component/NavBar'
+import { logout, updateProfile } from '../api'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../store/user'
+
+const testLogin = async () => {
+  const token = localStorage.getItem('token')
+  if (!token) {
+    logout
+    return
+  }
+
+  try {
+    let user = await getProfile() // Utilisation du token pour récupérer le profil
+    dispatch(login(user)) // Dispatch si le profil est récupéré
+  } catch (e) {
+    logout // logout si une erreur survient
+    localStorage.removeItem('token') // Suppression du token du stockage local
+  }
+};
+
 
 function User() {
   const dispatch = useDispatch()
-  const [count, setCount] = useState(0);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const user = useSelector((state)=>state.user.user)
-  const [firstName, setfirstName] = useState('');
-  const [lastName, setlastName] = useState('');
- useEffect(()=>{
- setfirstName(user.firstName )
- setlastName(user.lastName)
-
- },[user])
+  const [count, setCount] = useState(0)
+  const [isModalOpen, setModalOpen] = useState(false)
+  const user = useSelector((state) => state.user.user)
+  const [firstName, setfirstName] = useState('')
+  const [lastName, setlastName] = useState('')
+  useEffect(() => {
+    const fetchUserData = async () => {
+      await testLogin()
+      if (user) { // Met à jour les champs si l'utilisateur existe
+        setfirstName(user.firstName)
+        setlastName(user.lastName)
+      }
+    };
+    
+    fetchUserData();
+  }, [user, dispatch])
   // Fonction pour basculer la modale
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
