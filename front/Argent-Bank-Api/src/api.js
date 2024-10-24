@@ -12,8 +12,9 @@ export const signIn = async (email, password) => {
     
         const response = await token.json()
         console.log(response)
-        localStorage.setItem('token',response.body.token)
-    } catch (error) {
+        await localStorage.setItem('token',response.body.token)
+    } catch (error) 
+    {console.log(error)
 throw new Error(error)
     }
 
@@ -56,15 +57,4 @@ return response
 
 }
 
-export const logout = () => {
-    try {
-        // Retire le token du localStorage
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        // redirection de l'utilisateur vers la page de connexion 
-        window.location.href = '/sign-in'  // Ou toute autre route pertinente
-    } catch (error) {
-        console.error('Error during logout', error)
-    }
-}
 

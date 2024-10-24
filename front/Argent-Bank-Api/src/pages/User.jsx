@@ -1,28 +1,33 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, } from 'react'
 import '../main.css';
 import { Nav } from '../component/NavBar'
-import { logout, updateProfile } from '../api'
+import { updateProfile } from '../api'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../store/user'
+import { login, logout } from '../store/user'
+import { useNavigate } from 'react-router-dom'
 
-const testLogin = async () => {
-  const token = localStorage.getItem('token')
-  if (!token) {
-    logout
-    return
-  }
 
-  try {
-    let user = await getProfile() // Utilisation du token pour récupérer le profil
-    dispatch(login(user)) // Dispatch si le profil est récupéré
-  } catch (e) {
-    logout // logout si une erreur survient
-    localStorage.removeItem('token') // Suppression du token du stockage local
-  }
-};
 
 
 function User() {
+
+  const navigate = useNavigate()
+  const testLogin = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      dispatch(logout())
+      navigate('/sign-in')
+      return
+    }
+
+    try {
+      let user = await getProfile() // Utilisation du token pour récupérer le profil
+      dispatch(login(user)) // Dispatch si le profil est récupéré
+    } catch (e) {
+      dispatch(logout())
+      navigate('/sign-in')
+    }
+  };
   const dispatch = useDispatch()
   const [count, setCount] = useState(0)
   const [isModalOpen, setModalOpen] = useState(false)
@@ -37,7 +42,7 @@ function User() {
         setlastName(user.lastName)
       }
     };
-    
+
     fetchUserData();
   }, [user, dispatch])
   // Fonction pour basculer la modale

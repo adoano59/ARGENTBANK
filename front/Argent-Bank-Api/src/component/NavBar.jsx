@@ -1,10 +1,16 @@
 import React from 'react';
 import '../main.css';
-import { logout } from '../api';
+import { logout } from '../store/user';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export const Nav = () => {
   const user = useSelector((state) => state.user.user)
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+    dispatch(logout())
+    navigate('/sign-in')
+  }
   return (
     <nav className="main-nav">
       <a className="main-nav-logo" href="./index">
@@ -16,11 +22,12 @@ export const Nav = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </a>
       <div>
-        {user ? <button onClick={logout}>Logout</button> :
-          <a className="main-nav-item" href="./sign-in">
+
+        {user ? <button onClick={handleLogout}>Logout</button> :
+          <button onClick={()=>navigate('/sign-in')}>
             <i className="fa fa-user-circle"></i>
             Sign In
-          </a>}
+            </button>}
       </div>
     </nav>
   );
