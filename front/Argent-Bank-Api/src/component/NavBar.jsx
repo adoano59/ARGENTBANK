@@ -1,11 +1,12 @@
 import React from 'react';
 import '../main.css';
 import { logout } from '../store/user';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export const Nav = () => {
   const user = useSelector((state) => state.user.user)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleLogout = ()=>{
     dispatch(logout())

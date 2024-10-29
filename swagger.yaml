@@ -74,7 +74,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successully
+          description: User profile retrieved successfully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
@@ -103,9 +103,38 @@ paths:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successully
+          description: User profile updated successfully
           schema:
             $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: View Transactions
+      description: API to view transactions for a user's account
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: query
+          name: accountId
+          type: string
+          description: The ID of the user's account for which to fetch transactions
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
         '400':
           description: Invalid Fields
         '500':
@@ -164,3 +193,32 @@ definitions:
         type: string
       lastName:
         type: string
+  TransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          $ref: '#/definitions/Transaction'
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+        format: date
+        description: Date of the transaction
+      amount:
+        type: number
+        description: Amount of the transaction
+      description:
+        type: string
+        description: Description of the transaction
+      accountId:
+        type: string
+        description: The account ID associated with this transaction

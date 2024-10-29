@@ -1,7 +1,7 @@
 import { useState, useEffect, } from 'react'
 import '../main.css';
 import { Nav } from '../component/NavBar'
-import { updateProfile } from '../api'
+import { getProfile, updateProfile } from '../api'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from '../store/user'
 import { useNavigate } from 'react-router-dom'
@@ -23,11 +23,13 @@ function User() {
     try {
       let user = await getProfile() // Utilisation du token pour récupérer le profil
       dispatch(login(user)) // Dispatch si le profil est récupéré
+      setfirstName(user.firstName)
+      setlastName(user.lastName)
     } catch (e) {
       dispatch(logout())
       navigate('/sign-in')
     }
-  };
+  }
   const dispatch = useDispatch()
   const [count, setCount] = useState(0)
   const [isModalOpen, setModalOpen] = useState(false)
@@ -35,16 +37,8 @@ function User() {
   const [firstName, setfirstName] = useState('')
   const [lastName, setlastName] = useState('')
   useEffect(() => {
-    const fetchUserData = async () => {
-      await testLogin()
-      if (user) { // Met à jour les champs si l'utilisateur existe
-        setfirstName(user.firstName)
-        setlastName(user.lastName)
-      }
-    };
-
-    fetchUserData();
-  }, [user, dispatch])
+    testLogin();
+  }, [])
   // Fonction pour basculer la modale
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
@@ -60,7 +54,7 @@ function User() {
             <h1>
               Welcome back
               <br />
-              {user.firstName} {user.lastName}
+              {firstName} {lastName}
             </h1>
             <button className="edit-button" onClick={toggleModal}>
               Edit Name

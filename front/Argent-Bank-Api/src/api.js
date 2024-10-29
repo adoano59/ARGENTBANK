@@ -46,7 +46,10 @@ export const getProfile = async ( firstName ,lastName ) => {
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
+            }, body:JSON.stringify( {
+                "firstName": firstName,
+                "lastName": lastName
+            })
         })
     
         const response = await data.json()
