@@ -38,7 +38,7 @@ function User() {
   const [lastName, setlastName] = useState('')
   useEffect(() => {
     testLogin();
-  }, [])
+  }, [])
   // Fonction pour basculer la modale
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
@@ -54,7 +54,7 @@ function User() {
             <h1>
               Welcome back
               <br />
-              {firstName} {lastName}
+              {user.firstName} {user.lastName}
             </h1>
             <button className="edit-button" onClick={toggleModal}>
               Edit Name
