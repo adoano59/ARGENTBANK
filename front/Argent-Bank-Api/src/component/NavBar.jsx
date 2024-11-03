@@ -8,7 +8,7 @@ export const Nav = () => {
   const user = useSelector((state) => state.user.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     dispatch(logout())
     navigate('/sign-in')
   }
@@ -25,10 +25,10 @@ export const Nav = () => {
       <div>
 
         {user ? <button onClick={handleLogout}>Logout</button> :
-          <button onClick={()=>navigate('/sign-in')}>
+          <button onClick={() => navigate('/sign-in')}>
             <i className="fa fa-user-circle"></i>
             Sign In
-            </button>}
+          </button>}
       </div>
     </nav>
   );

@@ -70,11 +70,12 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
       produces:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successfully
+          description: User profile retrieved successully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
@@ -93,6 +94,7 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
         - in: body
           name: body
           description: Update user profile attributes
@@ -103,42 +105,177 @@ paths:
         - application/json
       responses:
         '200':
-          description: User profile updated successfully
+          description: User profile retrieved successully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /user/transactions:
+  /user/transactions/monthly:
     get:
       security:
         - Bearer: []
       tags:
-        - User Module
-      summary: View Transactions
-      description: API to view transactions for a user's account
+        - Transactions
+      summary: Visualiser les transactions du mois
+      description: Récupère toutes les transactions du mois en cours, groupées par compte
       parameters:
         - in: header
           name: Authorization
-          description: Attach Bearer JWT token
+          description: Token JWT pour l'authentification
           required: true
+          type: string
         - in: query
           name: accountId
-          type: string
-          description: The ID of the user's account for which to fetch transactions
+          description: ID du compte pour lequel les transactions sont à récupérer
           required: true
+          type: string
       produces:
         - application/json
       responses:
         '200':
-          description: Transactions retrieved successfully
+          description: Transactions récupérées avec succès
           schema:
             $ref: '#/definitions/TransactionsResponse'
         '400':
-          description: Invalid Fields
+          description: Paramètres de requête invalides
         '500':
-          description: Internal Server Error
+          description: Erreur serveur interne
+          
+  /user/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Visualiser les détails d'une transaction
+      description: Récupère les détails d'une transaction spécifique
+      parameters:
+        - in: header
+          name: Authorization
+          description: Token JWT pour l'authentification
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: ID de la transaction à afficher
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Détails de la transaction récupérés avec succès
+          schema:
+            $ref: '#/definitions/Transaction'
+        '404':
+          description: Transaction non trouvée
+        '500':
+          description: Erreur serveur interne
+
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Modifier la description d'une transaction
+      description: Modifie uniquement la description d'une transaction spécifique
+      parameters:
+        - in: header
+          name: Authorization
+          description: Token JWT pour l'authentification
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: ID de la transaction à modifier
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Nouvelle description pour la transaction
+          required: true
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Description de la transaction mise à jour avec succès
+        '404':
+          description: Transaction non trouvée
+        '500':
+          description: Erreur serveur interne
+
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Supprimer la description d'une transaction
+      description: Supprime uniquement la description d'une transaction spécifique
+      parameters:
+        - in: header
+          name: Authorization
+          description: Token JWT pour l'authentification
+          required: true
+          type: string
+        - in: path
+          name: transactionId
+          description: ID de la transaction dont la description doit être supprimée
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Description de la transaction supprimée avec succès
+        '404':
+          description: Transaction non trouvée
+        '500':
+          description: Erreur serveur interne
+
+  /user/transactions:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Ajouter une description de transaction
+      description: Ajoute une description à une transaction existante
+      parameters:
+        - in: header
+          name: Authorization
+          description: Token JWT pour l'authentification
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Détails de la transaction à ajouter (seule la description est autorisée)
+          required: true
+          schema:
+            type: object
+            properties:
+              transactionId:
+                type: string
+                description: ID de la transaction à laquelle ajouter la description
+              description:
+                type: string
+                description: Description de la transaction
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Description ajoutée avec succès
+        '400':
+          description: Paramètres invalides
+        '500':
+          description: Erreur serveur interne
+
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -212,13 +349,9 @@ definitions:
       date:
         type: string
         format: date
-        description: Date of the transaction
       amount:
         type: number
-        description: Amount of the transaction
       description:
         type: string
-        description: Description of the transaction
       accountId:
         type: string
-        description: The account ID associated with this transaction

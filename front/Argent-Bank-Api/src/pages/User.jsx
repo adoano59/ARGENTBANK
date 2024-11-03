@@ -21,7 +21,8 @@ function User() {
     }
 
     try {
-      let user = await getProfile() // Utilisation du token pour récupérer le profil
+      let res = await getProfile() // Utilisation du token pour récupérer le profil
+      const user = res.body
       dispatch(login(user)) // Dispatch si le profil est récupéré
       setfirstName(user.firstName)
       setlastName(user.lastName)
@@ -38,7 +39,14 @@ function User() {
   const [lastName, setlastName] = useState('')
   useEffect(() => {
     testLogin();
-  }, [])
+  }, [])
+  useEffect(() => {
+    if (user) {
+      setfirstName(user.firstName)
+      setlastName(user.lastName)
+    }
+  }, [user])
+  console.log(user.lastName)
   // Fonction pour basculer la modale
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
