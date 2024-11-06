@@ -7,11 +7,11 @@ import {
 } from "react-router-dom";
 import App from './pages/Home'
 import './index.css'
-import SignIn from "./pages/Sign-in";
-import User from "./pages/User";
+import SignIn from "./pages/Sign-in"
+import User from "./pages/User"
 import { store } from './store'
 import { Provider } from 'react-redux'
-import { GuestRoute, PrivateRoute } from "./component/Routes";
+import { GuestRoute, PrivateRoute } from "./component/Routes"
 
 
 
