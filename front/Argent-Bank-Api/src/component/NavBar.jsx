@@ -1,8 +1,9 @@
-import React from 'react';
-import '../main.css';
-import { logout } from '../store/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import '../main.css'
+import { logout } from '../store/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 export const Nav = () => {
   const user = useSelector((state) => state.user.user)
@@ -24,11 +25,16 @@ export const Nav = () => {
       </a>
       <div>
 
-        {user ? <button onClick={handleLogout}>Logout</button> :
-          <button onClick={() => navigate('/sign-in')}>
-            <i className="fa fa-user-circle"></i>
-            Sign In
-          </button>}
+      {user ? (
+  <div>
+    <span><i class="fa fa-user-circle"></i>&nbsp;{user.firstName}</span>
+    <button onClick={handleLogout}> <i class="fa fa-sign-out"></i>&nbsp;Logout</button>
+  </div>
+) : (
+  <button onClick={() => navigate('/sign-in')}>
+    <i className="fa fa-user-circle"></i>&nbsp; Sign In
+  </button>
+)}
       </div>
     </nav>
   );
