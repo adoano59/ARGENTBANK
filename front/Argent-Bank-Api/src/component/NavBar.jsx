@@ -27,7 +27,7 @@ export const Nav = () => {
 
       {user ? (
   <div>
-    <span><i class="fa fa-user-circle"></i>&nbsp;{user.firstName}</span>
+    <a href="/user"><span><i class="fa fa-user-circle"></i>&nbsp;{user.firstName}</span></a>
     <button onClick={handleLogout}> <i class="fa fa-sign-out"></i>&nbsp;Logout</button>
   </div>
 ) : (

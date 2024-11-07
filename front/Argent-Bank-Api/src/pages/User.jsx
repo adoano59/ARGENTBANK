@@ -117,6 +117,7 @@ function User() {
               </span>
               <h2>Edit Name</h2>
               <div className="UpdatefirstName">
+                <label>Firstname</label> <br />
                 <input
                   type="text"
                   placeholder="Enter new firstName"
@@ -125,6 +126,7 @@ function User() {
                 />
               </div>
               <div className="UpdateName">
+              <label>Lastname</label><br />
                 <input
                   type="text"
                   placeholder="Enter new lastName"
